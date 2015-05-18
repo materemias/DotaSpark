@@ -1,0 +1,63 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+    }
+}
+
+apply plugin: 'com.android.application'
+
+repositories {
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "com.example.dota2tv"
+        minSdkVersion 15
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs         = ['src']
+            resources.srcDirs    = ['src']
+            aidl.srcDirs         = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs          = ['res']
+            assets.srcDirs       = ['assets']
+        }
+
+        instrumentTest.setRoot('tests')
+    }
+    dexOptions {
+        preDexLibraries = false
+    }
+}
+
+dependencies {
+    //compile 'com.android.support:appcompat-v7:22.+'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile ('com.actionbarsherlock:actionbarsherlock:4.4.0@aar') {
+        exclude module: 'support-v4'
+    }
+    //compile 'com.android.support:support-v4:22.0.+'
+//    compile project(":DotaSpark:libs:vitamio")
+    compile 'me.neavo:vitamio:4.2.2'
+    compile (project(":DotaSpark:libs:LoadMoreListView")) {
+        exclude module: 'support-v4'
+    }
+}
