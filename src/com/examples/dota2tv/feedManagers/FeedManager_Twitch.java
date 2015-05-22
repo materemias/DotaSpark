@@ -1,19 +1,19 @@
 package com.examples.dota2tv.feedManagers;
 
-import java.util.ArrayList;
+import com.examples.dota2tv.data.Video;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import com.examples.dota2tv.data.Video;
+import java.util.ArrayList;
 
 public class FeedManager_Twitch extends FeedManager_Base {
 	private String twtichNextApi;
 
 	@Override
 	public ArrayList<Video> getVideoPlaylist() {
-		ArrayList<Video> videos = new ArrayList<Video>();
+		ArrayList<Video> videos = new ArrayList<>();
 
 		try {
 			processJSON(mJSON);
@@ -57,15 +57,14 @@ public class FeedManager_Twitch extends FeedManager_Base {
 
 			}
 		} catch (Exception ex) {
-
-			// ex.printStackTrace();
+			 ex.printStackTrace();
 		}
 
 		return videos;
 	}
 
 	@Override
-	public String getNextApi() {
+	public String getNextApi(String link) {
 		return twtichNextApi;
 	}
 
@@ -78,7 +77,7 @@ public class FeedManager_Twitch extends FeedManager_Base {
 			feed = (JSONObject) jsonParser.nextValue();
 			twtichNextApi = feed.getJSONObject("_links").getString("next");
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 	}
 

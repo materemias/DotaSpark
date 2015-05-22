@@ -12,7 +12,7 @@ public class FeedManager_Subscription extends FeedManager_Base {
 	@Override
 	public ArrayList<Video> getVideoPlaylist() {
 		processJSON(mJSON);
-		ArrayList<Video> videos = new ArrayList<Video>();
+		ArrayList<Video> videos = new ArrayList<>();
 
 		try {
 			// System.out.println(plTitle);
@@ -26,11 +26,8 @@ public class FeedManager_Subscription extends FeedManager_Base {
 				JSONObject oneVideo = playlist.getJSONObject(i);
 				// get the title of this video
 				String videoTitle = oneVideo.getString("title");
-				String videoLink = null;
-				String videoId = null;
-
-				videoLink = oneVideo.getString("link");
-				videoId = oneVideo.getString("id").substring(10);
+//				String videoLink = oneVideo.getString("link");;
+				String videoId = oneVideo.getString("yt:videoId");
 
 				// System.out.println("Working 2: "+videoLink);
 				String videoDesc = oneVideo.getJSONObject("media:group").getString("media:description");

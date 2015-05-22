@@ -50,7 +50,7 @@ public class LoadMore_Activity_Base extends SherlockListActivity {
 	protected View view;
 	protected LayoutInflater mInflater;
 	protected VideoArrayAdapter vaa;
-	protected ArrayList<LoadMoreTask> mLoadMoreTasks = new ArrayList<LoadMoreTask>();
+	protected ArrayList<LoadMoreTask> mLoadMoreTasks = new ArrayList<>();
 	protected Button mRetryButton;
 	protected View mRetryView;
 	protected boolean needFilter;
@@ -106,16 +106,16 @@ public class LoadMore_Activity_Base extends SherlockListActivity {
 		ab = getSupportActionBar();
 
 		// Initilizing the empty arrays
-		titles = new ArrayList<String>();
-		videos = new ArrayList<String>();
-		videolist = new ArrayList<Video>();
+		titles = new ArrayList<>();
+		videos = new ArrayList<>();
+		videolist = new ArrayList<>();
 		// thumbList = new ArrayList<String>();
 
 		// set adapter
 		// vaa = new VideoArrayAdapter(inflater.getContext(), titles, videolist,
 		// this);
 
-		API = new ArrayList<String>();
+		API = new ArrayList<>();
 
 		// Initializing important variables
 		API.add(recentAPI);
@@ -152,8 +152,8 @@ public class LoadMore_Activity_Base extends SherlockListActivity {
 		myLoadMoreListView = (LoadMoreListView) this.getListView();
 		myLoadMoreListView.setDivider(null);
 
-		if (myLoadMoreListView.getHeaderViewsCount() == 0 && hasHeader == true) {
-			View header = (View) getLayoutInflater().inflate(
+		if (myLoadMoreListView.getHeaderViewsCount() == 0 && hasHeader) {
+			View header = getLayoutInflater().inflate(
 					R.layout.titleview, null);
 			myLoadMoreListView.addHeaderView(header, null, false);
 
@@ -176,9 +176,9 @@ public class LoadMore_Activity_Base extends SherlockListActivity {
 			myLoadMoreListView.setOnLoadMoreListener(new OnLoadMoreListener() {
 				public void onLoadMore() {
 
-					if (isMoreVideos == true) {
+					if (isMoreVideos) {
 						// new LoadMoreTask().execute(API.get(0));
-						LoadMoreTask newTask = (LoadMoreTask) new LoadMoreTask(
+						LoadMoreTask newTask = new LoadMoreTask(
 								LoadMoreTask.LOADMORETASK, myLoadMoreListView,
 								fullscreenLoadingView, mRetryView);
 						newTask.execute(API.get(API.size() - 1));
@@ -252,7 +252,7 @@ public class LoadMore_Activity_Base extends SherlockListActivity {
 
 		@Override
 		public void handleCancelView() {
-			((LoadMoreListView) myLoadMoreListView).onLoadMoreComplete();
+			myLoadMoreListView.onLoadMoreComplete();
 
 			if (isException) {
 
@@ -270,7 +270,7 @@ public class LoadMore_Activity_Base extends SherlockListActivity {
 				@Override
 				public void onClick(View v) {
 
-					LoadMoreTask newTask = (LoadMoreTask) new LoadMoreTask(
+					LoadMoreTask newTask = new LoadMoreTask(
 							type, contentView, loadingView, retryView);
 					newTask.DisplayView(loadingView, contentView, retryView);
 					newTask.execute(API.get(API.size() - 1));
@@ -309,7 +309,7 @@ public class LoadMore_Activity_Base extends SherlockListActivity {
 					}
 
 					// put the next API in the first place of the array
-					API.add(feedManager.getNextApi());
+					API.add(feedManager.getNextApi(API.get(0)));
 					// nextAPI = feedManager.getNextApi();
 					if (API.get(API.size() - 1) == null) {
 						// No more videos left
@@ -317,20 +317,20 @@ public class LoadMore_Activity_Base extends SherlockListActivity {
 					}
 
 				} catch (Exception e) {
-
+					e.printStackTrace();
 				}
 				vaa.notifyDataSetChanged();
 
 				// Call onLoadMoreComplete when the LoadMore task, has
 				// finished
-				((LoadMoreListView) myLoadMoreListView).onLoadMoreComplete();
+				myLoadMoreListView.onLoadMoreComplete();
 
 				// loading done
 				DisplayView(contentView, retryView, loadingView);
 				if (!isMoreVideos) {
-					((LoadMoreListView) myLoadMoreListView).onNoMoreItems();
+					myLoadMoreListView.onNoMoreItems();
 
-					((LoadMoreListView) myLoadMoreListView)
+					myLoadMoreListView
 							.setOnLoadMoreListener(null);
 				}
 
@@ -402,10 +402,10 @@ public class LoadMore_Activity_Base extends SherlockListActivity {
 
 	public void redoRequest(String api, FeedManager_Base fb) {
 		// Clean the API array, titiles, videos, and videlist
-		API = new ArrayList<String>();
-		titles = new ArrayList<String>();
-		videos = new ArrayList<String>();
-		videolist = new ArrayList<Video>();
+		API = new ArrayList<>();
+		titles = new ArrayList<>();
+		videos = new ArrayList<>();
+		videolist = new ArrayList<>();
 
 		// Set feed manager
 		feedManager = fb;

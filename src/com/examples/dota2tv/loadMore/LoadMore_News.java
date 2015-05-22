@@ -2,7 +2,6 @@ package com.examples.dota2tv.loadMore;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Build;
@@ -26,7 +25,6 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
 import com.costum.android.widget.LoadMoreListView;
 import com.costum.android.widget.LoadMoreListView.OnLoadMoreListener;
 import com.examples.dota2tv.R;
@@ -49,8 +47,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 //import android.os.Message;
 
 @SuppressLint("HandlerLeak")
-public class LoadMore_News extends LoadMore_Base implements
-		SearchView.OnQueryTextListener {
+public class LoadMore_News extends LoadMore_Base {
 
 	private ImageView[] imageViews = null;
 	private ImageView imageView = null;
@@ -59,8 +56,8 @@ public class LoadMore_News extends LoadMore_Base implements
 	private boolean isContinue = true;
 	private boolean isEnd = false;
 	private ViewGroup group;
-	private ArrayList<String> matches = new ArrayList<String>();
-	private ArrayList<String> results = new ArrayList<String>();
+	private ArrayList<String> matches = new ArrayList<>();
+	private ArrayList<String> results = new ArrayList<>();
 	private Elements links = new Elements();
 	boolean isPagerSet = false;
 	private getMatchInfo mMatchInfo;
@@ -118,7 +115,7 @@ public class LoadMore_News extends LoadMore_Base implements
 			R.drawable.dota98, R.drawable.dota99, R.drawable.dota100,
 			R.drawable.dota101, R.drawable.dota102, R.drawable.dota103 };
 
-	private List<View> views = new ArrayList<View>();
+	private List<View> views = new ArrayList<>();
 
 	// private Thread myThread;
 
@@ -131,8 +128,10 @@ public class LoadMore_News extends LoadMore_Base implements
 		abTitle = "What's New";
 
 		// Give API URLs
-		API.add("https://gdata.youtube.com/feeds/api/users/cpGJHANGum7tFm0kg6fh7g/newsubscriptionvideos?max-results=10&alt=json");
+//		API.add("https://gdata.youtube.com/feeds/api/users/cpGJHANGum7tFm0kg6fh7g/newsubscriptionvideos?max-results=10&alt=json");
 //		API.add("http://youtube-rss.f-y.name/rss/55590a90-dcb3-11e3-a44f-0401096cca01/?alt=json");
+		API.add(String.format("http://pipes.yahoo.com/pipes/pipe.run?_id=de0d226ed41d024619c60bf01296aebd&_render=json&limit=%d&from=0", noOfElementsToLoadATime));
+
 		// set a feed manager
 		feedManager = new FeedManager_Subscription();
 
@@ -162,19 +161,6 @@ public class LoadMore_News extends LoadMore_Base implements
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-		SearchView searchView = new SearchView(sfa.getSupportActionBar()
-				.getThemedContext());
-		searchView.setQueryHint("Search Youtube");
-		searchView.setOnQueryTextListener(this);
-
-		menu.add(0, 20, 0, "Search")
-				.setIcon(R.drawable.abs__ic_search)
-				.setActionView(searchView)
-				.setShowAsAction(
-						MenuItem.SHOW_AS_ACTION_IF_ROOM
-								| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-
 		menu.add(0, 0, 0, "Refresh")
 				.setIcon(R.drawable.ic_refresh)
 				.setShowAsAction(
@@ -210,9 +196,9 @@ public class LoadMore_News extends LoadMore_Base implements
 					// Do the work to load more items at the end of
 					// list
 
-					if (isMoreVideos == true) {
+					if (isMoreVideos) {
 						// new LoadMoreTask().execute(API.get(0));
-						LoadMoreTask newTask = (LoadMoreTask) new LoadMoreTask(
+						LoadMoreTask newTask = new LoadMoreTask(
 								LoadMoreTask.LOADMORETASK, myLoadMoreListView,
 								listLoading, listRetry);
 						newTask.execute(API.get(API.size() - 1));
@@ -241,12 +227,10 @@ public class LoadMore_News extends LoadMore_Base implements
 		String[] matcharray = matches.toArray(new String[matches.size()]);
 		String[] resultarray = results.toArray(new String[results.size()]);
 
-		View v1 = new View(sfa);
-		View v2 = new View(sfa);
 		final LayoutInflater inflater = (LayoutInflater) sfa
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		v1 = inflater.inflate(R.layout.livetext, null, false);
+		View v1 = inflater.inflate(R.layout.livetext, null, false);
 		v1.setBackgroundResource(myDrawables[rand_1]);
 
 		TextView liveTitle = (TextView) v1.findViewById(R.id.livetitle);
@@ -315,7 +299,7 @@ public class LoadMore_News extends LoadMore_Base implements
 
 		views.add(v1);
 
-		v2 = inflater.inflate(R.layout.livetext, null, false);
+		View v2 = inflater.inflate(R.layout.livetext, null, false);
 		v2.setBackgroundResource(myDrawables[rand_2]);
 
 		liveTitle = (TextView) v2.findViewById(R.id.livetitle);
@@ -529,12 +513,6 @@ public class LoadMore_News extends LoadMore_Base implements
 		public void destroyItem(ViewGroup collection, int position, Object view) {
 			// ((ViewPager) arg0).removeView(views.get(arg1));
 			collection.removeView((View) view);
-			view = null;
-		}
-
-		@Override
-		public void finishUpdate(View arg0) {
-
 		}
 
 		@Override
@@ -555,20 +533,12 @@ public class LoadMore_News extends LoadMore_Base implements
 		}
 
 		@Override
-		public void restoreState(Parcelable arg0, ClassLoader arg1) {
-
-		}
+		public void restoreState(Parcelable arg0, ClassLoader arg1) {}
 
 		@Override
 		public Parcelable saveState() {
 			return null;
 		}
-
-		@Override
-		public void startUpdate(View arg0) {
-
-		}
-
 	}
 
 	private class getMatchInfo extends MyAsyncTask {
@@ -588,7 +558,7 @@ public class LoadMore_News extends LoadMore_Base implements
 				@Override
 				public void onClick(View v) {
 
-					mMatchInfo = (getMatchInfo) new getMatchInfo(type,
+					mMatchInfo = new getMatchInfo(type,
 							contentView, loadingView, retryView);
 					mMatchInfo.execute(url);
 				}
@@ -605,7 +575,7 @@ public class LoadMore_News extends LoadMore_Base implements
 				try {
 					pull(responseString);
 				} catch (Exception e) {
-
+					e.printStackTrace();
 				}
 			}
 			return responseString;
@@ -659,7 +629,7 @@ public class LoadMore_News extends LoadMore_Base implements
 				try {
 					initViewPager();
 				} catch (Exception e) {
-
+					e.printStackTrace();
 				}
 				DisplayView(contentView, retryView, loadingView);
 
@@ -721,23 +691,4 @@ public class LoadMore_News extends LoadMore_Base implements
 			mMatchInfo.cancel(true);
 
 	}
-
-	@Override
-	public boolean onQueryTextSubmit(String query) {
-		// Toast.makeText(sfa, "You searched for: " + query, Toast.LENGTH_LONG)
-		// .show();
-
-		// starting search activity
-		Intent intent = new Intent(sfa, LoadMore_Activity_Search_Youtube.class);
-		intent.putExtra("query", query);
-		startActivity(intent);
-		return true;
-	}
-
-	@Override
-	public boolean onQueryTextChange(String newText) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }

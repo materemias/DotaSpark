@@ -1,8 +1,11 @@
 package com.examples.dota2tv.feedManagers;
 
-import com.examples.dota2tv.data.Video;
+import android.net.Uri;
+import android.net.Uri.Builder;
 
-import org.json.JSONArray;
+import com.examples.dota2tv.data.Video;
+import com.examples.dota2tv.loadMore.LoadMore_Base;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -33,79 +36,86 @@ public class FeedManager_Base {
 	}
 
 	// Return a list of Video objects according to the JSON String provided
-	public ArrayList<Video> getVideoPlaylist() {
-
-		processJSON(mJSON);
-
-		ArrayList<Video> videos = new ArrayList<Video>();
-
-		try {
-			// get the playlist
-			JSONArray playlist = feed.getJSONArray("entry");
-
-			for (int i = 0; i < playlist.length(); i++) {
-				// get a video in the playlist
-				JSONObject oneVideo = playlist.getJSONObject(i);
-				// get the title of this video
-				String videoTitle = oneVideo.getJSONObject("title").getString(
-						"$t");
-				String videoLink = null;
-				String videoId = null;
-				videoLink = oneVideo.getJSONObject("content").getString("src");
-				videoId = videoLink.substring(videoLink.indexOf("/v/") + 3,
-						videoLink.indexOf("?"));
-				String videoDesc = oneVideo.getJSONObject("media$group")
-						.getJSONObject("media$description").getString("$t");
-				String thumbUrl = oneVideo.getJSONObject("media$group")
-						.getJSONArray("media$thumbnail").getJSONObject(2)
-						.getString("url");
-				String updateTime = oneVideo.getJSONObject("published")
-						.getString("$t");
-				String author = oneVideo.getJSONArray("author")
-						.getJSONObject(0).getJSONObject("name").getString("$t");
-				String vCount = oneVideo.getJSONObject("yt$statistics")
-						.getString("viewCount") + " views";
-				String inSecs = oneVideo.getJSONObject("media$group")
-						.getJSONObject("yt$duration").getString("seconds");
-				String convertedDuration = formatSecondsAsTime(inSecs) + " HD";
-
-				updateTime = handleDate(updateTime);
-
-				Video video = new Video();
-
-				// store title and link
-				video.setTitle(videoTitle);
-				video.setVideoId(videoId);
-				video.setThumbnailUrl(thumbUrl);
-				video.setVideoDesc(videoDesc);
-				video.setUpdateTime(updateTime);
-				video.setAuthor(author);
-				video.setViewCount(vCount);
-				video.setDuration(convertedDuration);
-
-				// push it to the list
-				videos.add(video);
-
-			}
-
-		} catch (Exception ex) {
-
-			ex.printStackTrace();
-		}
-
-		return videos;
-	}
+	public ArrayList<Video> getVideoPlaylist() {return null;}
+//
+//		processJSON(mJSON);
+//
+//		ArrayList<Video> videos = new ArrayList<>();
+//
+//		try {
+//			// get the playlist
+//			JSONArray playlist = feed.getJSONArray("entry");
+//
+//			for (int i = 0; i < playlist.length(); i++) {
+//				// get a video in the playlist
+//				JSONObject oneVideo = playlist.getJSONObject(i);
+//				// get the title of this video
+//				String videoTitle = oneVideo.getJSONObject("title").getString(
+//						"$t");
+//				String videoLink = null;
+//				String videoId = null;
+//				videoLink = oneVideo.getJSONObject("content").getString("src");
+//				videoId = videoLink.substring(videoLink.indexOf("/v/") + 3,
+//						videoLink.indexOf("?"));
+//				String videoDesc = oneVideo.getJSONObject("media$group")
+//						.getJSONObject("media$description").getString("$t");
+//				String thumbUrl = oneVideo.getJSONObject("media$group")
+//						.getJSONArray("media$thumbnail").getJSONObject(2)
+//						.getString("url");
+//				String updateTime = oneVideo.getJSONObject("published")
+//						.getString("$t");
+//				String author = oneVideo.getJSONArray("author")
+//						.getJSONObject(0).getJSONObject("name").getString("$t");
+//				String vCount = oneVideo.getJSONObject("yt$statistics")
+//						.getString("viewCount") + " views";
+//				String inSecs = oneVideo.getJSONObject("media$group")
+//						.getJSONObject("yt$duration").getString("seconds");
+//				String convertedDuration = formatSecondsAsTime(inSecs) + " HD";
+//
+//				updateTime = handleDate(updateTime);
+//
+//				Video video = new Video();
+//
+//				// store title and link
+//				video.setTitle(videoTitle);
+//				video.setVideoId(videoId);
+//				video.setThumbnailUrl(thumbUrl);
+//				video.setVideoDesc(videoDesc);
+//				video.setUpdateTime(updateTime);
+//				video.setAuthor(author);
+//				video.setViewCount(vCount);
+//				video.setDuration(convertedDuration);
+//
+//				// push it to the list
+//				videos.add(video);
+//
+//			}
+//
+//		} catch (Exception ex) {
+//
+//			ex.printStackTrace();
+//		}
+//
+//		return videos;
+//	}
 
 	// Return the next data api from Youtube
-	public String getNextApi() throws JSONException {
-		JSONArray link = feed.getJSONArray("link");
-		for (int i = 0; i < link.length(); i++) {
-			JSONObject jo = link.getJSONObject(i);
-			if (jo.getString("rel").equals("next")) {
-				// there are more videos in this playlist
-				String nextUrl = jo.getString("href");
-				return nextUrl;
+	public String getNextApi(String link) throws JSONException {
+		if (feed.getJSONArray("items").length() == LoadMore_Base.noOfElementsToLoadATime) {
+			// there are more videos in this playlist
+			Uri uri = Uri.parse(link);
+			String start = uri.getQueryParameter("from");
+			Integer nextInt;
+			if (start!=null){
+				Integer startInt = Integer.parseInt(start);
+				nextInt = startInt + LoadMore_Base.noOfElementsToLoadATime;
+			} else {
+				nextInt = LoadMore_Base.noOfElementsToLoadATime;
 			}
+			String truncated = link.substring(0, link.indexOf("&from="));
+			Builder builder = Uri.parse(truncated).buildUpon();
+			builder.appendQueryParameter("from", nextInt.toString());
+			return builder.build().toString();
 		}
 		return null;
 
