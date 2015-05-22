@@ -1,7 +1,5 @@
 package com.costum.android.widget;
 
-import com.android.widget.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -9,6 +7,8 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
+import com.android.widget.R;
 
 /*
  * Copyright (C) 2012 Fabian Leon Ortega <http://orleonsoft.blogspot.com/,
@@ -115,8 +115,9 @@ public class PullAndLoadListView extends PullToRefreshListView {
 	/**
 	 * Notify the loading more operation has finished
 	 */
-	public void onLoadMoreComplete() {
+	public void onLoadMoreComplete(){
 		mIsLoadingMore = false;
+		mProgressBarLoadMore.setVisibility(View.GONE);
 	}
 
 	/**

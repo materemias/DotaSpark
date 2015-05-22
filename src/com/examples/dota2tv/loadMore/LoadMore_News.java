@@ -621,9 +621,6 @@ public class LoadMore_News extends LoadMore_Base {
 
 		@Override
 		protected void onPostExecute(String result) {
-
-			// Log.d("AsyncDebug", "Into onPostExecute!");
-
 			if (!taskCancel && result != null) {
 				// Do anything with response..
 				try {
@@ -636,9 +633,7 @@ public class LoadMore_News extends LoadMore_Base {
 			} else {
 				handleCancelView();
 			}
-
 		}
-
 	}
 
 	@Override
