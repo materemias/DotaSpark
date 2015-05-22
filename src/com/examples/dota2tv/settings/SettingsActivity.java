@@ -1,23 +1,22 @@
 package com.examples.dota2tv.settings;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.actionbarsherlock.view.MenuItem;
+import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.view.MenuItem;
+
 import com.examples.dota2tv.R;
 
-import android.os.Bundle;
-
-public class SettingsActivity extends SherlockPreferenceActivity {
-	private ActionBar mActionBar;
+public class SettingsActivity extends PreferenceActivity {
+//	private ActionBar mActionBar;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mActionBar = getSupportActionBar();
-
-		mActionBar.setHomeButtonEnabled(true);
-		mActionBar.setDisplayHomeAsUpEnabled(true);
+//		mActionBar = getSupportActionBar();
+//
+//		mActionBar.setHomeButtonEnabled(true);
+//		mActionBar.setDisplayHomeAsUpEnabled(true);
 
 		addPreferencesFromResource(R.xml.preferences);
 

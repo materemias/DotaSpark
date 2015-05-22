@@ -1,8 +1,9 @@
 package com.examples.dota2tv.loadMore;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import com.examples.dota2tv.R;
 
 public class LoadMore_Activity_Search extends LoadMore_Activity_Base
@@ -20,7 +21,7 @@ public class LoadMore_Activity_Search extends LoadMore_Activity_Base
 		searchView.setOnQueryTextListener(this);
 
 		menu.add(0, 20, 0, "Search")
-				.setIcon(R.drawable.abs__ic_search)
+				.setIcon(android.R.drawable.ic_menu_search)
 				.setActionView(searchView)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_IF_ROOM

@@ -1,10 +1,9 @@
 package com.examples.dota2tv.loadMore;
 
 import android.content.Intent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-
-import com.actionbarsherlock.view.MenuItem;
 
 public class LoadMore_Base_UP extends LoadMore_Base {
 
@@ -21,7 +20,7 @@ public class LoadMore_Base_UP extends LoadMore_Base {
 		String title = videolist.get(position).getTitle();
 		String url = videolist.get(position).getThumbnailUrl();
 
-		Intent i = new Intent(this.getSherlockActivity(),
+		Intent i = new Intent(this.getActivity(),
 				LoadMore_Activity_Channel.class);
 		i.putExtra("API", nextFragmentAPI);
 		i.putExtra("PLAYLIST_API", videolist.get(position).getPlaylistsUrl());

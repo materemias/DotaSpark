@@ -1,7 +1,5 @@
 package com.examples.dota2tv.loadMore;
 
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,18 +8,20 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
 import com.examples.dota2tv.R;
 import com.examples.dota2tv.feedManagers.FeedManager_Twitch;
 import com.examples.dota2tv.settings.FlashInstallerActivity;
 import com.examples.dota2tv.twitchplayers.TwitchPlayer;
 import com.examples.dota2tv.twitchplayers.VideoBuffer;
+
+import java.util.List;
 
 public class LoadMore_Twitch extends LoadMore_Base implements
 		SearchView.OnQueryTextListener {
@@ -45,7 +45,7 @@ public class LoadMore_Twitch extends LoadMore_Base implements
 		// Get preference
 //		prefs = this.getSherlockActivity().getSharedPreferences(
 //				"com.examples.gg", this.getSherlockActivity().MODE_PRIVATE);
-		prefs = PreferenceManager.getDefaultSharedPreferences(getSherlockActivity());
+		prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		
 
 	}
@@ -59,7 +59,7 @@ public class LoadMore_Twitch extends LoadMore_Base implements
 		searchView.setOnQueryTextListener(this);
 
 		menu.add(0, 20, 0, "Search")
-				.setIcon(R.drawable.abs__ic_search)
+				.setIcon(android.R.drawable.ic_menu_search)
 				.setActionView(searchView)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_IF_ROOM
@@ -79,13 +79,13 @@ public class LoadMore_Twitch extends LoadMore_Base implements
 		// Getting the preferred player
 		String preferredPlayer = prefs.getString("preferredPlayer", "-1");
 //		Log.i("debug prefs", preferredPlayer);
-		final Context mContext = this.getSherlockActivity();
+		final Context mContext = this.getActivity();
 		if (preferredPlayer.equals("-1")) {
 			// No preference
 			final CharSequence[] colors_radio = {
 					"New Player(No Flash needed)", "Old Player(Flash needed)" };
 
-			new AlertDialog.Builder(this.getSherlockActivity())
+			new AlertDialog.Builder(this.getActivity())
 					.setSingleChoiceItems(colors_radio, 0, null)
 					.setPositiveButton("Just once",
 							new DialogInterface.OnClickListener() {

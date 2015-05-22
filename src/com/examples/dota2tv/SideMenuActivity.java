@@ -11,15 +11,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.examples.dota2tv.adapters.EntryAdapter;
 import com.examples.dota2tv.data.EntryItem;
 import com.examples.dota2tv.data.Item;
@@ -36,7 +36,7 @@ import com.examples.dota2tv.settings.SettingsActivity;
 import java.util.ArrayList;
 
 
-public class SideMenuActivity extends SherlockFragmentActivity {
+public class SideMenuActivity extends AppCompatActivity {
 
 	// Declare Variable
 	DrawerLayout mDrawerLayout;
@@ -152,7 +152,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.menu, menu);
+		getMenuInflater().inflate(R.menu.menu, menu);
 		return true;
 	}
 

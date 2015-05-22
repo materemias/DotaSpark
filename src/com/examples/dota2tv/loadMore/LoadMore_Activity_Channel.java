@@ -1,18 +1,17 @@
 package com.examples.dota2tv.loadMore;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
 import com.examples.dota2tv.R;
 import com.examples.dota2tv.feedManagers.FeedManager_Base;
 import com.examples.dota2tv.feedManagers.FeedManager_Playlist;
 
 public class LoadMore_Activity_Channel extends LoadMore_Activity_Base implements
-		OnNavigationListener {
+		ActionBar.OnNavigationListener {
 	private boolean isFirstTimeLoading = true;
 
 	@Override
@@ -23,40 +22,44 @@ public class LoadMore_Activity_Channel extends LoadMore_Activity_Base implements
 		final String[] catagory = { "Recent", "Playlists" };
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-				ab.getThemedContext(), R.layout.sherlock_spinner_item,
+				ab.getThemedContext(), android.R.layout.simple_spinner_item,
 				android.R.id.text1, catagory);
 
-		adapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
+		adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
 		ab.setListNavigationCallbacks(adapter, this);
 
 		ab.setSelectedNavigationItem(currentPosition);
 	}
 
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
+	class MyFragment extends LoadMore_Activity_Base.MyFragment {
 
-		// First check it is under which section
-		switch (section) {
-		case 0:
-			// In "Recent"
-			Intent i = new Intent(this, YoutubeActionBarActivity.class);
-			i.putExtra("video", videolist.get(position-1));
-			startActivity(i);
-			break;
+		@Override
+		public void onListItemClick(ListView l, View v, int position, long id) {
 
-		case 1:
-			// In "Playlists"
-			Intent i1 = new Intent(this, LoadMore_Activity_Base.class);
+			// First check it is under which section
+			switch (section) {
+				case 0:
+					// In "Recent"
+					Intent i = new Intent(getActivity(), YoutubeActionBarActivity.class);
+					i.putExtra("video", videolist.get(position - 1));
+					startActivity(i);
+					break;
 
-			i1.putExtra("API", videolist.get(position-1).getRecentVideoUrl());
-			i1.putExtra("PLAYLIST_API", videolist.get(position-1)
-					.getPlaylistsUrl());
-			i1.putExtra("title", videolist.get(position-1).getTitle());
-			i1.putExtra("thumbnail", videolist.get(position-1)
-					.getThumbnailUrl());
-			startActivity(i1);
-			break;
+				case 1:
+					// In "Playlists"
+					Intent i1 = new Intent(getActivity(), LoadMore_Activity_Base.class);
+
+					i1.putExtra("API", videolist.get(position - 1).getRecentVideoUrl());
+					i1.putExtra("PLAYLIST_API", videolist.get(position - 1)
+							.getPlaylistsUrl());
+					i1.putExtra("title", videolist.get(position - 1).getTitle());
+					i1.putExtra("thumbnail", videolist.get(position - 1)
+							.getThumbnailUrl());
+					startActivity(i1);
+					break;
+
+			}
 
 		}
 

@@ -12,19 +12,22 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.ShareActionProvider;
 import com.examples.dota2tv.R;
 import com.examples.dota2tv.data.Match;
 import com.examples.dota2tv.data.MyAsyncTask;
@@ -50,7 +53,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
 
-public class MatchDetailsActivity extends SherlockListActivity {
+public class MatchDetailsActivity extends AppCompatActivity {
 
 	private ActionBar mActionBar;
 	private Match match;
@@ -60,8 +63,8 @@ public class MatchDetailsActivity extends SherlockListActivity {
 	private ImageLoader imageLoader = ImageLoader.getInstance();
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 	DisplayImageOptions options;
-	private ArrayList<String> lives = new ArrayList<String>();
-	private ArrayList<String> videoIds = new ArrayList<String>();
+	private ArrayList<String> lives = new ArrayList<>();
+	private ArrayList<String> videoIds = new ArrayList<>();
 	private View mRetryView;
 	private TextView myTimer;
 	private View contentLayout;
@@ -72,6 +75,29 @@ public class MatchDetailsActivity extends SherlockListActivity {
 	private String tName1;
 	private String tName2;
 	private SharedPreferences prefs;
+
+	private ListView mListView;
+
+	protected ListView getListView() {
+		if (mListView == null) {
+			mListView = (ListView) findViewById(android.R.id.list);
+		}
+		return mListView;
+	}
+
+	protected void setListAdapter(ListAdapter adapter) {
+		getListView().setAdapter(adapter);
+	}
+
+	protected ListAdapter getListAdapter() {
+		ListAdapter adapter = getListView().getAdapter();
+		if (adapter instanceof HeaderViewListAdapter) {
+			return ((HeaderViewListAdapter)adapter).getWrappedAdapter();
+		} else {
+			return adapter;
+		}
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -129,12 +155,12 @@ public class MatchDetailsActivity extends SherlockListActivity {
 			menu.add(0, 1, 0, "").setIcon(R.drawable.ic_action_bell)
 					.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		}
-		getSupportMenuInflater().inflate(R.menu.share_action_provider, menu);
+		getMenuInflater().inflate(R.menu.share_action_provider, menu);
 
 		MenuItem actionItem = menu
 				.findItem(R.id.menu_item_share_action_provider_action_bar);
-		ShareActionProvider actionProvider = (ShareActionProvider) actionItem
-				.getActionProvider();
+		ShareActionProvider actionProvider = (ShareActionProvider) MenuItemCompat
+				.getActionProvider(actionItem);
 		actionProvider
 				.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
 		// Note that you can set/change the intent any time,
@@ -209,10 +235,7 @@ public class MatchDetailsActivity extends SherlockListActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
 	protected void onListItemClick(ListView l, View v, final int position, long id) {
-
-		super.onListItemClick(l, v, position, id);
 
 		if (match.getMatchStatus() == Match.ENDED) {
 			Intent i = new Intent(this, YoutubeActionBarActivity.class);

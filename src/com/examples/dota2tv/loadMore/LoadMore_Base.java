@@ -8,19 +8,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.costum.android.widget.LoadMoreListView;
 import com.costum.android.widget.LoadMoreListView.OnLoadMoreListener;
 import com.examples.dota2tv.R;
@@ -33,14 +33,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoadMore_Base extends SherlockListFragment implements
+public class LoadMore_Base extends ListFragment implements
 		ActionBar.OnNavigationListener {
 	protected LoadMoreListView myLoadMoreListView;
 	protected ArrayList<String> titles;
 	protected ArrayList<Video> videolist;
 
 	protected boolean isMoreVideos;
-	protected SherlockFragmentActivity sfa;
+	protected AppCompatActivity sfa;
 	protected ActionBar ab;
 	protected String abTitle;
 	protected FeedManager_Base feedManager;
@@ -74,7 +74,7 @@ public class LoadMore_Base extends SherlockListFragment implements
 			Bundle savedInstanceState) {
 
 		// Get the current activity
-		sfa = this.getSherlockActivity();
+		sfa = (AppCompatActivity) this.getActivity();
 
 		// Get loading view
 		fullscreenLoadingView = sfa
@@ -145,10 +145,10 @@ public class LoadMore_Base extends SherlockListFragment implements
 
 			ArrayAdapter<String> adapter = new ArrayAdapter<>(
 					mActionBar.getThemedContext(),
-					R.layout.sherlock_spinner_item, android.R.id.text1,
+					android.R.layout.simple_spinner_item, android.R.id.text1,
 					catagory);
 
-			adapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
+			adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
 			mActionBar.setListNavigationCallbacks(adapter, this);
 
@@ -242,8 +242,7 @@ public class LoadMore_Base extends SherlockListFragment implements
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(
-			com.actionbarsherlock.view.MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item) {
 
 		// do nothing if no network
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -289,7 +288,7 @@ public class LoadMore_Base extends SherlockListFragment implements
 		// Toast.makeText(this.getSherlockActivity(), videos.get(position),
 		// Toast.LENGTH_SHORT).show();
 
-		Intent i = new Intent(this.getSherlockActivity(),
+		Intent i = new Intent(this.getActivity(),
 				YoutubeActionBarActivity.class);
 		i.putExtra("video", videolist.get(position));
 		startActivity(i);

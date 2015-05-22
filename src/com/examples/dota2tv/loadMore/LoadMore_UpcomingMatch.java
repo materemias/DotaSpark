@@ -1,12 +1,5 @@
 package com.examples.dota2tv.loadMore;
 
-import java.util.ArrayList;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
@@ -20,6 +13,13 @@ import com.costum.android.widget.LoadMoreListView.OnLoadMoreListener;
 import com.examples.dota2tv.R;
 import com.examples.dota2tv.adapters.MatchArrayAdapter;
 import com.examples.dota2tv.data.Match;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.util.ArrayList;
 
 public class LoadMore_UpcomingMatch extends LoadMore_Base {
 
@@ -115,7 +115,7 @@ public class LoadMore_UpcomingMatch extends LoadMore_Base {
 		// matchArray.get(position).getGosuLink(), Toast.LENGTH_SHORT)
 		// .show();
 
-		Intent i = new Intent(this.getSherlockActivity(),
+		Intent i = new Intent(this.getActivity(),
 				MatchDetailsActivity.class);
 		i.putExtra("match", matchArray.get(position));
 		startActivity(i);

@@ -1,16 +1,5 @@
 package com.examples.dota2tv.loadMore;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.TimeZone;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,17 +7,28 @@ import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.costum.android.widget.LoadMoreListView;
 import com.costum.android.widget.LoadMoreListView.OnLoadMoreListener;
 import com.examples.dota2tv.R;
 import com.examples.dota2tv.adapters.NewsArrayAdapter;
 import com.examples.dota2tv.data.News;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class LoadMore_JD_News extends LoadMore_Base {
 	private ArrayList<News> mNews = new ArrayList<News>();
@@ -67,10 +67,10 @@ public class LoadMore_JD_News extends LoadMore_Base {
 
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 					mActionBar.getThemedContext(),
-					R.layout.sherlock_spinner_item, android.R.id.text1,
+					android.R.layout.simple_spinner_item, android.R.id.text1,
 					catagory);
 
-			adapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
+			adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
 			mActionBar.setListNavigationCallbacks(adapter, this);
 

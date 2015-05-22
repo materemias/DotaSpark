@@ -33,5 +33,13 @@
            <item name="android:windowBackground">@drawable/my_theme_gradient</item>
            <item name="android:colorBackgroundCacheHint">#00000000</item>
     </style>
+
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!--<item name="android:windowFullscreen">true</item>-->
+        <!--<item name="android:windowContentOverlay">@null</item>-->
+    </style>
     
 </resources>
